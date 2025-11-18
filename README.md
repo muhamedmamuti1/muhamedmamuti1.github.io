@@ -9,7 +9,7 @@ A modern, responsive portfolio website showcasing my work as a software develope
 - ⚡ Built with React and Vite for fast performance
 - 🎭 Smooth scroll animations using Framer Motion
 - 🌙 Dark theme with gradient accents
-- ♿ Accessible and SEO-friendly
+- 👌 Accessible and SEO-friendly
 
 ## Tech Stack
 
