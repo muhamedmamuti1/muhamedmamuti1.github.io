@@ -57,7 +57,7 @@ function App() {
       <header className="hero" id="home">
         <div className="hero-backdrop" aria-hidden />
         <nav className="nav">
-          <a href="#home" className="logo">
+            <a href="/" className="logo">
             <img
               src="/logo.png"
               alt="MM Logo"

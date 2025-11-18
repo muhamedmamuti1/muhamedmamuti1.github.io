@@ -6,30 +6,24 @@ export const heroHighlights = [
 
 export const experiences = [
   {
-    role: 'Kotlin Backend Developer',
+    role: 'Backend Developer',
     company: 'Vitec Memorix B.V.',
     period: 'Feb 2025 - Present',
     location: 'Skopje · Hybrid',
     summary:
-      'Building healthcare-grade knowledge platforms with resilient Kotlin microservices, event-driven integrations, and observability-first practices.',
-    highlights: [
-      'Shipped a document ingestion pipeline with 8x faster processing through structured concurrency and async backpressure.',
-      'Raised platform reliability to 99.97% by introducing chaos testing scenarios and automated regression monitors.',
-    ],
-    stack: ['Kotlin', 'Spring Boot', 'PostgreSQL', 'AWS', 'Kafka'],
+      'Backend Developer on behalf of K Resourcing.',
+    highlights: [],
+    stack: [],
   },
   {
-    role: 'Kotlin Backend Developer',
+    role: 'Backend Developer',
     company: 'K Resourcing',
     period: 'Feb 2025 - Present',
     location: 'Skopje · Hybrid',
     summary:
-      'Consulting on greenfield fintech APIs, architecting compliance-ready services and mentoring teams on clean backend design.',
-    highlights: [
-      'Led the rollout of a payments orchestration service handling 12k TPS with automated scaling rules.',
-      'Reduced onboarding time by 40% with internal tooling, templates, and hands-on workshops.',
-    ],
-    stack: ['Ktor', 'Kubernetes', 'Redis', 'Jenkins', 'Grafana'],
+      'Backend Developer',
+    highlights: [],
+    stack: [],
   },
   {
     role: 'Backend Developer',
@@ -37,12 +31,12 @@ export const experiences = [
     period: 'Feb 2024 - Feb 2025',
     location: 'Gostivar · Hybrid',
     summary:
-      'Delivering bespoke backend systems for SMB clients, from requirements discovery to deployment and documentation.',
+      'Developed backend applications and adhered to top coding standards and architectural practices.',
     highlights: [
-      'Designed modular service blueprints that cut delivery time per client by 25%.',
-      'Implemented clean code review rituals improving defect detection before release.',
+      'Created clean, readable codebases for easy maintenance and collaboration within the team.',
+      'Collaborated closely with teammates to build custom backend solutions from scratch, meeting client needs effectively.',
     ],
-    stack: ['Node.js', 'NestJS', 'Prisma', 'PostgreSQL', 'AWS'],
+    stack: ['Node.js', 'Prisma', 'PostgreSQL', 'AWS'],
   },
   {
     role: 'Android Developer',
@@ -50,12 +44,12 @@ export const experiences = [
     period: 'Nov 2022 - Nov 2023',
     location: 'Tetovo · Hybrid',
     summary:
-      'Built and optimized Android apps powering fleet management experiences for global logistics teams.',
+      'Developed and maintained Android applications for a fleet management software company.',
     highlights: [
-      'Improved tracking accuracy by 18% with a custom sensor fusion layer.',
-      'Cut crash rate in half via proactive observability dashboards and on-call playbooks.',
+      'Worked with cross-functional teams to understand requirements and delivered quality software in a timely manner.',
+      'Implemented new features, fixed bugs and optimized code for performance.',
     ],
-    stack: ['Kotlin', 'Android', 'Compose', 'Mapbox', 'Firebase'],
+    stack: ['Kotlin', 'Android', 'Compose', 'Firebase'],
   },
   {
     role: 'Software Developer',
@@ -63,12 +57,12 @@ export const experiences = [
     period: 'Feb 2021 - Nov 2022',
     location: 'Tetovo · Hybrid',
     summary:
-      'Contributed to hotel management solutions, bridging UI engineering with backend workflows and integrations.',
+      'Contributed to the development of hotel management software.',
     highlights: [
-      'Launched role-based modules that modernized booking and housekeeping flows.',
-      'Conducted peer reviews to uphold maintainable, testable code quality.',
+      'Collaborated with the team to design and implement software modules.',
+      'Conducted code reviews and resolved issues to maintain code quality and efficiency.',
     ],
-    stack: ['Java', 'Spring', 'MySQL', 'REST', 'JasperReports'],
+    stack: ['Java', 'MySQL', 'REST', 'JasperReports'],
   },
 ]
 
