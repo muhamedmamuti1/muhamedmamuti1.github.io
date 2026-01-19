@@ -22,6 +22,7 @@
 .hero {
     position: relative;
     padding: 3rem 5vw 4rem;
+    padding-top: 8rem;
     overflow: hidden;
 }
 
@@ -39,8 +40,12 @@
 
 /* Main nav container */
 .nav {
-    position: sticky;
-    top: 0;
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 10vw);
+    max-width: 1200px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -50,14 +55,292 @@
     background: rgba(10, 10, 16, 0.65);
     border: 1px solid rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(24px);
-    z-index: 10;
+    z-index: 100;
+    transition: all 0.3s ease;
 }
 
-/* 5-column equal layout */
-.five-cols {
+/* Collapsed nav state - only hamburger button */
+.nav.nav-collapsed {
+    top: 1.5rem;
+    right: 1.5rem;
+    left: auto;
+    transform: none;
+    width: auto;
+    max-width: none;
+    padding: 0;
+    border-radius: 50%;
+    background: rgba(10, 10, 16, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Hide brand and nav links when collapsed */
+.nav.nav-collapsed .nav-col.brand,
+.nav.nav-collapsed .nav-links-desktop {
+    display: none;
+}
+
+/* Desktop nav links */
+.nav-links-desktop {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex: 1;
+    gap: 0.5rem;
+}
+
+/* Menu toggle button - always visible */
+.menu-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    color: var(--text-primary);
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    backdrop-filter: blur(10px);
+}
+
+.menu-toggle.mobile-only {
+    display: flex;
+}
+
+@media (min-width: 901px) {
+    .menu-toggle.mobile-only {
+        display: none;
+    }
+}
+
+.menu-toggle:hover {
+    border-color: var(--brand);
+    background: rgba(124, 58, 237, 0.15);
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+}
+
+.menu-toggle:active {
+    transform: scale(0.95);
+}
+
+.menu-toggle svg {
+    width: 22px;
+    height: 22px;
+    transition: transform 0.3s ease;
+}
+
+/* Collapsed state - circular button */
+.menu-toggle.collapsed-only {
+    display: flex;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(10, 10, 16, 0.6);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.menu-toggle.collapsed-only:hover {
+    background: rgba(124, 58, 237, 0.2);
+    border-color: var(--brand);
+    box-shadow: 0 12px 40px rgba(124, 58, 237, 0.4);
+    transform: scale(1.1);
+}
+
+.menu-toggle.collapsed-only svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* Mobile menu overlay - minimalistic glassy design */
+.mobile-menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 5, 12, 0.4);
+    backdrop-filter: blur(12px);
+    z-index: 200;
+    pointer-events: none;
+}
+
+.mobile-menu-overlay.open {
+    pointer-events: auto;
+}
+
+.mobile-menu {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 380px;
+    max-width: 90vw;
+    height: 100%;
+    background: rgba(10, 10, 16, 0.7);
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(40px) saturate(180%);
+    display: flex;
+    flex-direction: column;
+    padding: 3rem 2.5rem;
+    box-shadow: -20px 0 60px rgba(0, 0, 0, 0.3);
+    overflow-y: auto;
+}
+
+.mobile-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.mobile-menu-brand-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.mobile-menu-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: rgba(20, 20, 33, 0.5);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.mobile-menu-logo:hover {
+    border-color: var(--brand);
+    transform: translateY(-2px);
+}
+
+.mobile-menu-logo-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 8px;
+    display: block;
+}
+
+.mobile-menu-brand {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+}
+
+.mobile-menu-close {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: var(--text-primary);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.mobile-menu-close:hover {
+    border-color: var(--brand);
+    background: rgba(124, 58, 237, 0.15);
+    transform: rotate(90deg);
+}
+
+.mobile-menu-close svg {
+    width: 20px;
+    height: 20px;
+}
+
+.mobile-menu-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.mobile-menu-links a {
+    padding: 1.25rem 1.5rem;
+    border-radius: 16px;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.05rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px) saturate(180%);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.mobile-menu-links a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(124, 58, 237, 0.2), rgba(124, 58, 237, 0.1));
+    transition: width 0.3s ease;
+    z-index: -1;
+}
+
+.mobile-menu-links a::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    opacity: 0.5;
+    pointer-events: none;
+    border-radius: 16px;
+}
+
+.mobile-menu-links a:hover {
+    color: var(--text-primary);
+    border-color: rgba(124, 58, 237, 0.4);
+    transform: translateX(8px);
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 6px 24px rgba(124, 58, 237, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.mobile-menu-links a:hover::before {
+    width: 100%;
+}
+
+.mobile-menu-links a:last-child {
+    margin-top: 1rem;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.4), rgba(124, 58, 237, 0.3));
+    color: white;
+    border-color: rgba(124, 58, 237, 0.5);
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.mobile-menu-links a:last-child::after {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+}
+
+.mobile-menu-links a:last-child:hover {
+    transform: translateX(8px) translateY(-2px);
+    box-shadow: 0 8px 30px rgba(124, 58, 237, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.5), rgba(124, 58, 237, 0.4));
+    border-color: rgba(124, 58, 237, 0.6);
 }
 
 /* Each column = 20% */
@@ -86,12 +369,16 @@
 .nav-col.brand {
     justify-content: flex-start;
     gap: 0.75rem;
+    min-width: 0;
+    flex: 0 1 auto;
 }
 
 /* Logo inside brand */
 .logo {
     width: 48px;
     height: 48px;
+    min-width: 36px;
+    min-height: 36px;
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     display: flex;
@@ -99,7 +386,8 @@
     justify-content: center;
     overflow: hidden;
     background: rgba(20, 20, 33, 0.5);
-    transition: border-color 0.2s ease, transform 0.2s ease;
+    transition: border-color 0.2s ease, transform 0.2s ease, width 0.3s ease, height 0.3s ease;
+    flex-shrink: 0;
 }
 
 .logo:hover {
@@ -112,6 +400,8 @@
     height: 100%;
     object-fit: contain;
     padding: 8px;
+    display: block;
+    flex-shrink: 0;
 }
 
 .brand-name {
@@ -119,6 +409,15 @@
     font-weight: 600;
     font-size: 1rem;
     white-space: nowrap;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.brand-name .first-name,
+.brand-name .last-name {
+    display: inline;
 }
 
 /* Small circular CTA */
@@ -140,22 +439,26 @@
 /* -------------------- TABLET -------------------- */
 @media (max-width: 900px) {
     .nav {
-        flex-direction: column;
-        gap: 1rem;
         padding: 1rem 1.25rem;
+        width: calc(100% - 8vw);
+        justify-content: space-between;
     }
 
-    .nav-col {
-        width: 100%;
-        justify-content: center;
+    .nav.nav-collapsed {
+        top: 1.5rem;
+        right: 1.5rem;
+        left: auto;
+        transform: none;
+        width: auto;
+        padding: 0;
     }
 
-    .nav-col.brand {
-        justify-content: center;
+    .nav-links-desktop {
+        display: none;
     }
 
-    .small-cta {
-        max-width: 240px;
+    .menu-toggle.mobile-only {
+        display: flex;
     }
 }
 
@@ -617,43 +920,13 @@ footer {
     color: var(--text-secondary);
 }
 
-.footer-note {
-    margin-top: 0.4rem;
-    font-size: 0.9rem;
-}
 
 /* ---------------- TABLET & BELOW ---------------- */
 
 @media (max-width: 900px) {
     .hero {
         padding: 2rem 4vw 3rem;
-    }
-
-    /* REVISED NAVIGATION LAYOUT */
-    .nav {
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 1rem;
-        padding: 1rem 1.25rem;
-    }
-
-    .brand {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .nav-links {
-        width: 100%;
-        justify-content: center !important;
-        gap: 1.25rem;
-        flex-wrap: wrap;
-    }
-
-    .ghost-button {
-        width: 100%;
-        max-width: 280px;
-        justify-content: center;
+        padding-top: 7rem;
     }
 
     .hero-main {
@@ -747,6 +1020,7 @@ footer {
 @media (max-width: 640px) {
     .hero {
         padding: 1.5rem 4vw 2.5rem;
+        padding-top: 6rem;
     }
 
     main {
@@ -755,12 +1029,52 @@ footer {
 
     /* NAVIGATION — MOBILE FIX */
     .nav {
-        position: static;
-        flex-direction: column;
+        position: fixed;
+        top: 1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        flex-direction: row;
         align-items: center;
-        gap: 1rem;
-        padding: 1rem 1rem;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding: 1rem 1.25rem;
         border-radius: 1rem;
+        width: calc(100% - 2rem);
+    }
+
+    .nav.nav-collapsed {
+        top: 1.5rem;
+        right: 1rem;
+        left: auto;
+        transform: none;
+        width: auto;
+        padding: 0;
+    }
+
+    .nav-links-desktop {
+        display: none;
+    }
+
+    .menu-toggle.mobile-only {
+        display: flex;
+        width: 44px;
+        height: 44px;
+    }
+
+    .menu-toggle.collapsed-only {
+        display: flex;
+        width: 52px;
+        height: 52px;
+    }
+
+    .menu-toggle.collapsed-only svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .mobile-menu {
+        width: 320px;
+        padding: 2.5rem 2rem;
     }
 
     .brand {
@@ -768,29 +1082,9 @@ footer {
         justify-content: center;
     }
 
-    .nav-links {
-        width: 100%;
-        justify-content: center !important;
-        gap: 1rem;
-        flex-wrap: wrap;
-        font-size: 0.85rem;
-        text-align: center;
-    }
-
-    .ghost-button {
-        width: 100%;
-        max-width: 280px;
-        justify-content: center;
-        text-align: center;
-    }
-
     .logo {
         width: 40px;
         height: 40px;
-    }
-
-    .nav-links a {
-        padding: 0.4rem 0.5rem;
     }
 
     .hero-main {
@@ -992,26 +1286,8 @@ footer {
         font-size: 0.9rem;
     }
 
-    .footer-note {
-        font-size: 0.85rem;
-        margin-top: 0.5rem;
-    }
 }
 
-/* Small mobile and scroll button */
-@media (max-width: 768px) {
-    .scroll-to-top {
-        bottom: 1.5rem;
-        right: 1.5rem;
-        width: 3rem;
-        height: 3rem;
-    }
-
-    .scroll-to-top svg {
-        width: 1.25rem;
-        height: 1.25rem;
-    }
-}
 
 /* Very small screens */
 @media (max-width: 400px) {
@@ -1027,9 +1303,6 @@ footer {
         font-size: 1.35rem;
     }
 
-    .nav-links {
-        font-size: 0.8rem;
-    }
 
     .github-content h3 {
         font-size: 1.1rem;
@@ -1057,117 +1330,9 @@ h1, h2, h3, h4, h5, h6, p, a, span, li {
 }
 
 /* Improve touch targets */
-button, a, .nav-links a, .primary-button, .outline-button, .ghost-button {
+button, a, .primary-button, .outline-button {
     touch-action: manipulation;
     -webkit-tap-highlight-color: rgba(148, 77, 255, 0.2);
 }
 
-/* Scroll to top button */
-.scroll-to-top {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--brand), #9f7aea);
-    border: none;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 8px 24px rgba(148, 77, 255, 0.4);
-    z-index: 50;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
 
-.scroll-to-top:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(148, 77, 255, 0.5);
-}
-
-.scroll-to-top:active {
-    transform: translateY(-2px);
-}
-
-.scroll-to-top svg {
-    width: 1.5rem;
-    height: 1.5rem;
-}
-
-/* Small mobile and scroll button – final pass */
-@media (max-width: 768px) {
-    .scroll-to-top {
-        bottom: 1.5rem;
-        right: 1.5rem;
-        width: 3rem;
-        height: 3rem;
-    }
-
-    .scroll-to-top svg {
-        width: 1.25rem;
-        height: 1.25rem;
-    }
-}
-
-/* ===========================
-   5-COLUMN NAVIGATION LAYOUT
-   =========================== */
-
-.five-cols {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0;
-}
-
-/* Each column gets exactly 20% width */
-.five-cols .nav-col {
-    width: 20%;
-    text-align: center;
-    text-decoration: none;
-    color: var(--text-secondary);
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Logo + Name column */
-.nav-col.brand {
-    justify-content: flex-start;
-    gap: 0.75rem;
-}
-
-/* Let’s talk button column */
-.five-cols .ghost-button {
-    justify-content: center;
-    width: 20%;
-}
-
-/* Mobile layout */
-@media (max-width: 640px) {
-    .five-cols {
-        flex-direction: column;
-        gap: 0.75rem;
-        padding: 1rem;
-    }
-
-    .nav-col,
-    .nav-col.brand,
-    .ghost-button.nav-col {
-        width: 100% !important;
-        justify-content: center !important;
-        text-align: center;
-    }
-
-    .brand {
-        justify-content: center !important;
-    }
-
-    .ghost-button {
-        max-width: 240px;
-        padding: 0.7rem 1rem;
-    }
-}

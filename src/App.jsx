@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, useScroll, useSpring } from 'framer-motion'
-import { FiArrowUpRight, FiArrowUp } from 'react-icons/fi'
+import { FiArrowUpRight, FiMenu, FiX } from 'react-icons/fi'
 import { FaGithub } from 'react-icons/fa'
 import {
     heroHighlights,
@@ -11,12 +11,6 @@ import {
 import { useTypewriter } from './hooks/useTypewriter'
 import { TypewriterText } from './components/TypewriterText'
 import './App.css'
-
-const navLinks = [
-    { href: '#experience', label: 'Experience' },
-    { href: '#projects', label: 'Projects' },
-    { href: '#skills', label: 'Skills' },
-]
 
 const fadeUp = {
     initial: { opacity: 0, y: 32 },
@@ -33,22 +27,79 @@ function App() {
         restDelta: 0.001,
     })
 
-    const [showScrollTop, setShowScrollTop] = useState(false)
+    const [isNavCollapsed, setIsNavCollapsed] = useState(false)
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const heroText = "Building reliable platforms that feel as elegant as they are powerful."
     const { displayedText, isComplete } = useTypewriter(heroText, 60)
 
+    const scrollToTop = (e) => {
+        if (e) {
+            e.preventDefault()
+            e.stopPropagation()
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+        // Close mobile menu if open
+        if (isMobileMenuOpen) {
+            setIsMobileMenuOpen(false)
+        }
+    }
+
+    // Prevent body scroll when mobile menu is open
+    useEffect(() => {
+        if (isMobileMenuOpen) {
+            document.body.style.overflow = 'hidden'
+        } else {
+            document.body.style.overflow = ''
+        }
+        return () => {
+            document.body.style.overflow = ''
+        }
+    }, [isMobileMenuOpen])
+
     useEffect(() => {
         const handleScroll = () => {
-            setShowScrollTop(window.scrollY > 400)
+            setIsNavCollapsed(window.scrollY > 100)
+            // Close mobile menu when scrolling
+            if (isMobileMenuOpen) {
+                setIsMobileMenuOpen(false)
+            }
         }
 
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
-    }, [])
+        // Smooth scroll handler for anchor links
+        const handleAnchorClick = (e) => {
+            const href = e.currentTarget.getAttribute('href')
+            if (href && href.startsWith('#') && href !== '#') {
+                e.preventDefault()
+                const targetId = href.substring(1)
+                const targetElement = document.getElementById(targetId)
+                if (targetElement) {
+                    const navHeight = 120 // Account for fixed nav
+                    const targetPosition = targetElement.offsetTop - navHeight
+                    window.scrollTo({
+                        top: Math.max(0, targetPosition),
+                        behavior: 'smooth'
+                    })
+                    // Close mobile menu after clicking a link
+                    setIsMobileMenuOpen(false)
+                }
+            }
+        }
 
-    const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
+        // Add smooth scroll to all anchor links on the page
+        const anchorLinks = document.querySelectorAll('a[href^="#"]')
+        anchorLinks.forEach(link => {
+            link.addEventListener('click', handleAnchorClick)
+        })
+
+        window.addEventListener('scroll', handleScroll)
+        
+        return () => {
+            window.removeEventListener('scroll', handleScroll)
+            anchorLinks.forEach(link => {
+                link.removeEventListener('click', handleAnchorClick)
+            })
+        }
+    }, [isMobileMenuOpen])
 
     return (
         <div className="app-shell">
@@ -56,26 +107,100 @@ function App() {
 
             <header className="hero" id="home">
                 <div className="hero-backdrop" aria-hidden />
-                <nav className="nav five-cols">
-                    <div className="nav-col brand">
-                        <a href="/" className="logo">
-                            <img
-                                src="/logo.png"
-                                alt="MM Logo"
-                                className="logo-image"
-                            />
-                        </a>
-                        <span className="brand-name">Muhamed Mamuti</span>
-                    </div>
+                <nav className={`nav ${isNavCollapsed ? 'nav-collapsed' : ''}`}>
+                    {!isNavCollapsed && (
+                        <>
+                            <div className="nav-col brand">
+                                <a href="#home" className="logo" onClick={scrollToTop}>
+                                    <img
+                                        src="/logo.png"
+                                        alt="MM Logo"
+                                        className="logo-image"
+                                    />
+                                </a>
+                                <span className="brand-name">
+                                    <span className="first-name">Muhamed</span>
+                                    <span className="last-name">Mamuti</span>
+                                </span>
+                            </div>
 
-                    <a className="nav-col nav-link" href="#experience">Experience</a>
-                    <a className="nav-col nav-link" href="#projects">Projects</a>
-                    <a className="nav-col nav-link" href="#skills">Skills</a>
+                            <div className="nav-links-desktop">
+                                <a className="nav-col nav-link" href="#experience">Experience</a>
+                                <a className="nav-col nav-link" href="#projects">Projects</a>
+                                <a className="nav-col nav-link" href="#skills">Skills</a>
+                                <a className="nav-col small-cta" href="#contact">
+                                    Let's talk
+                                </a>
+                            </div>
 
-                    <a className="nav-col small-cta" href="#contact">
-                        Let’s talk
-                    </a>
+                            <button 
+                                className="menu-toggle mobile-only"
+                                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                                aria-label="Toggle menu"
+                            >
+                                {isMobileMenuOpen ? <FiX /> : <FiMenu />}
+                            </button>
+                        </>
+                    )}
+
+                    {isNavCollapsed && (
+                        <button 
+                            className="menu-toggle collapsed-only"
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            aria-label="Toggle menu"
+                        >
+                            {isMobileMenuOpen ? <FiX /> : <FiMenu />}
+                        </button>
+                    )}
                 </nav>
+
+                {/* Mobile Menu Overlay */}
+                <motion.div
+                    className={`mobile-menu-overlay ${isMobileMenuOpen ? 'open' : ''}`}
+                    initial={false}
+                    animate={{
+                        opacity: isMobileMenuOpen ? 1 : 0,
+                        pointerEvents: isMobileMenuOpen ? 'auto' : 'none',
+                    }}
+                    transition={{ duration: 0.2 }}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                >
+                    <motion.div
+                        className="mobile-menu"
+                        initial={false}
+                        animate={{
+                            x: isMobileMenuOpen ? 0 : '100%',
+                        }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className="mobile-menu-header">
+                            <div className="mobile-menu-brand-wrapper">
+                                <a href="#home" className="mobile-menu-logo" onClick={scrollToTop}>
+                                    <img
+                                        src="/logo.png"
+                                        alt="MM Logo"
+                                        className="mobile-menu-logo-image"
+                                    />
+                                </a>
+                                <span className="mobile-menu-brand">Muhamed Mamuti</span>
+                            </div>
+                            <button
+                                className="mobile-menu-close"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                aria-label="Close menu"
+                            >
+                                <FiX />
+                            </button>
+                        </div>
+                        <div className="mobile-menu-links">
+                            <a href="#experience" onClick={() => setIsMobileMenuOpen(false)}>Experience</a>
+                            <a href="#projects" onClick={() => setIsMobileMenuOpen(false)}>Projects</a>
+                            <a href="#skills" onClick={() => setIsMobileMenuOpen(false)}>Skills</a>
+                            <a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>Let's talk</a>
+                        </div>
+                    </motion.div>
+                </motion.div>
 
                 <div className="hero-content">
                     <div className="hero-main">
@@ -295,21 +420,6 @@ function App() {
             <footer>
                 <p>© {new Date().getFullYear()} Muhamed Mamuti</p>
             </footer>
-
-            <motion.button
-                className="scroll-to-top"
-                onClick={scrollToTop}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{
-                    opacity: showScrollTop ? 1 : 0,
-                    scale: showScrollTop ? 1 : 0.8,
-                    pointerEvents: showScrollTop ? 'auto' : 'none',
-                }}
-                transition={{ duration: 0.3, ease: 'easeOut' }}
-                aria-label="Scroll to top"
-            >
-                <FiArrowUp />
-            </motion.button>
         </div>
     )
 }

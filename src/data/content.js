@@ -113,7 +113,7 @@ export const contactChannels = [
   {
     label: 'Phone',
     value: '+389 71 397 985',
-    href: null,
+    href: 'https://wa.me/38971397985',
   },
   {
     label: 'Location',
