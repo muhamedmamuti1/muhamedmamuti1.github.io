@@ -1,16 +1,47 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Muhamed Mamuti - Backend Developer</title>
+    <meta
+      name="description"
+      content="Muhamed Mamuti is a backend developer from Tetovo, North Macedonia, building reliable platforms with Kotlin, Java and Node.js."
+    />
+    <meta name="theme-color" content="#1a1815" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Muhamed Mamuti - Backend Developer" />
+    <meta
+      property="og:description"
+      content="Building reliable platforms that feel as elegant as they are powerful."
+    />
+    <meta property="og:image" content="/profile-picture.jpg" />
+
     <link rel="icon" type="image/png" href="/logo.png" />
-    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <link rel="apple-touch-icon" href="/logo.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-    <title>Muhamed Mamuti - Portfolio</title>
-    <script type="module" crossorigin src="/assets/index-BDQP3nPK.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-B0lPgCX3.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap"
+    />
+
+    <script>
+      (function () {
+        var theme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+        try {
+          var saved = localStorage.getItem('theme')
+          if (saved === 'light' || saved === 'dark') theme = saved
+        } catch (e) {}
+        document.documentElement.dataset.theme = theme
+      })()
+    </script>
+    <script type="module" crossorigin src="/assets/index-sF7_KMLZ.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-COSItafM.css">
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"></div>
   </body>
 </html>
