@@ -42,57 +42,55 @@ export function Header({ theme, onToggleTheme }) {
   const ThemeIcon = theme === 'dark' ? FiSun : FiMoon
 
   return (
-    <header className={`site-header ${isScrolled || isMenuOpen ? 'is-scrolled' : ''}`}>
-      <div className="container header-inner">
-        <a href="#home" className="brand" onClick={closeMenu} aria-label={`${profile.name}, back to top`}>
-          <img src="/logo.png" alt="" className="brand-mark" width="32" height="32" />
-          <span className="brand-name">{profile.name}</span>
-        </a>
+    <>
+      <header className={`site-header ${isScrolled || isMenuOpen ? 'is-scrolled' : ''}`}>
+        <div className="container header-inner">
+          <a href="#home" className="brand" onClick={closeMenu} aria-label={`${profile.name}, back to top`}>
+            <img src="/logo.png" alt="" className="brand-mark" width="32" height="32" />
+            <span className="brand-name">{profile.name}</span>
+          </a>
 
-        <nav className="nav-desktop" aria-label="Primary">
-          <ul>
-            {navLinks.map((link) => (
-              <li key={link.id}>
-                <a
-                  href={`#${link.id}`}
-                  className="nav-link"
-                  aria-current={activeId === link.id ? 'true' : undefined}
-                >
-                  {activeId === link.id && (
-                    <motion.span
-                      layoutId="nav-pill"
-                      className="nav-pill"
-                      transition={{ type: 'spring', stiffness: 380, damping: 32 }}
-                    />
-                  )}
-                  <span className="nav-label">{link.label}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+          <nav className="nav-desktop" aria-label="Primary">
+            <ul>
+              {navLinks.map((link) => (
+                <li key={link.id}>
+                  <a href={`#${link.id}`} className="nav-link" aria-current={activeId === link.id ? 'true' : undefined}>
+                    {activeId === link.id && (
+                      <motion.span
+                        layoutId="nav-pill"
+                        className="nav-pill"
+                        transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                      />
+                    )}
+                    <span className="nav-label">{link.label}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-        <div className="header-actions">
-          <button
-            type="button"
-            className="icon-button"
-            onClick={onToggleTheme}
-            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
-          >
-            <ThemeIcon aria-hidden />
-          </button>
-          <button
-            type="button"
-            className="icon-button menu-button"
-            onClick={() => setIsMenuOpen((open) => !open)}
-            aria-expanded={isMenuOpen}
-            aria-controls="mobile-menu"
-            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-          >
-            {isMenuOpen ? <FiX aria-hidden /> : <FiMenu aria-hidden />}
-          </button>
+          <div className="header-actions">
+            <button
+              type="button"
+              className="icon-button"
+              onClick={onToggleTheme}
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+            >
+              <ThemeIcon aria-hidden />
+            </button>
+            <button
+              type="button"
+              className="icon-button menu-button"
+              onClick={() => setIsMenuOpen((open) => !open)}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
+              aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+            >
+              {isMenuOpen ? <FiX aria-hidden /> : <FiMenu aria-hidden />}
+            </button>
+          </div>
         </div>
-      </div>
+      </header>
 
       <AnimatePresence>
         {isMenuOpen && (
@@ -113,11 +111,7 @@ export function Header({ theme, onToggleTheme }) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.04 * index }}
                 >
-                  <a
-                    href={`#${link.id}`}
-                    onClick={closeMenu}
-                    aria-current={activeId === link.id ? 'true' : undefined}
-                  >
+                  <a href={`#${link.id}`} onClick={closeMenu} aria-current={activeId === link.id ? 'true' : undefined}>
                     <span className="mobile-index">0{index + 1}</span>
                     {link.label}
                   </a>
@@ -136,6 +130,6 @@ export function Header({ theme, onToggleTheme }) {
           </motion.nav>
         )}
       </AnimatePresence>
-    </header>
+    </>
   )
 }

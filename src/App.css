@@ -214,6 +214,7 @@
 .mobile-menu {
   position: fixed;
   inset: var(--header-height) 0 0 0;
+  z-index: 99;
   background: var(--bg);
   overflow-y: auto;
 }
